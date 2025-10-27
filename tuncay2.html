@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PVPEVİM - Metin2 & Knight Online PVP Server Listesi</title>
+    
+<script src="https://cdn.tailwindcss.com"></script>
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Inter Font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        
+        :root {
+            --primary-red: #cc0000;
+            --dark-bg: #1a1a1a;
+            --mid-dark: #2a2a2a;
+            --light-red: #ff3333;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: #ccc;
+            overflow-x: hidden;
+        }
+
+        /* 1. Hareketli Arka Plan (Moving Stylish Background) */
+        .animated-bg {
+            position: fixed;
+            top: -10vh; 
+            left: -10vw;
+            width: 120vw;
+            height: 120vh;
+            background-image: url('https://w0.peakpx.com/wallpaper/403/17/HD-wallpaper-metin2-dragon-mountain-dragon-fantasy-game-metin.jpg'); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            opacity: 0.1; 
+            z-index: -1;
+            animation: slowZoomPan 40s infinite alternate;
+        }
+
+        @keyframes slowZoomPan {
+            from {
+                transform: scale(1.0) translate(0, 0);
+            }
+            to {
+                transform: scale(1.1) translate(-5%, -5%);
+            }
+        }
+
+        /* 2. Custom Styles for Tables (Metin2/Knight Theme) - İYİLEŞTİRİLDİ */
+        .server-table th {
+            background-color: var(--primary-red);
+            color: white;
+            padding: 8px 12px; /* Daha kompakt */
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .server-table td {
+            background-color: var(--mid-dark);
+            border-bottom: 1px solid #3a3a3a;
+            padding: 8px 12px; /* Daha kompakt */
+            font-size: 0.9rem; /* Okunurluk için hafif küçük yazı */
+        }
+        
+        /* 3. Primary Buttons */
+        .btn-primary {
+            background-color: var(--primary-red);
+            transition: background-color 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(204, 0, 0, 0.4);
+        }
+        .btn-primary:hover {
+            background-color: var(--light-red);
+            box-shadow: 0 6px 8px -1px rgba(204, 0, 0, 0.6);
+        }
+        
+        /* Logout Button */
+        .btn-logout {
+            background-color: #4a4a4a;
+            transition: background-color 0.2s;
+        }
+        .btn-logout:hover {
+            background-color: #6a6a6a;
+        }
+
+        /* 4. Message Box Styles */
+        #msg-modal-box {
+            background-color: var(--dark-bg);
+            border-top: 5px solid var(--primary-red);
+        }
+
+        /* Yeni: Öne Çıkan Reklam için Parlama Efekti */
+        .featured-ad-glow {
+            box-shadow: 0 0 15px 5px rgba(255, 0, 0, 0.7), 0 0 30px 10px rgba(255, 51, 51, 0.4); /* Kırmızı parlama */
+            border: 3px solid;
+            border-image: linear-gradient(45deg, #FFD700, #FF4500, #FFD700) 1; /* Altın-kırmızı degrade çerçeve */
+            transform: scale(1.0);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .featured-ad-glow:hover {
+            transform: scale(1.02); /* Hafif büyütme */
+            box-shadow: 0 0 20px 8px rgba(255, 0, 0, 0.9), 0 0 40px 15px rgba(255, 51, 51, 0.6); /* Daha güçlü parlama */
+        }
+
+        /* Yeni: Kılıç İkonu Animasyonu */
+        @keyframes sway {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(5deg); }
+            100% { transform: rotate(0deg); }
+        }
+        .animate-sway {
+            animation: sway 2s infinite ease-in-out;
+        }
+
+        /* Yeni: Navigasyon Linkleri Hover Efektleri */
+        .nav-link-item {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 12px; /* Hafif iç boşluk */
+            border-radius: 6px;
+            transition: all 0.2s ease-in-out;
+            color: #d1d5db; /* gray-300 */
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5); /* Hafif metin gölgesi */
+        }
+        .nav-link-item:hover {
+            background-color: rgba(204, 0, 0, 0.3); /* Yarı şeffaf kırmızı arka plan */
+            color: white;
+            transform: translateY(-2px) rotate(1deg); /* Hafif yukarı ve dönüş */
+            box-shadow: 0 4px 10px rgba(204, 0, 0, 0.6); /* Kırmızımsı kutu gölgesi */
+        }
+        .nav-link-item .icon-glow {
+            filter: drop-shadow(0 0 5px rgba(255, 255, 0, 0.7)); /* İkonlara sarı parlama */
+        }
+        .nav-link-item:hover .icon-glow {
+            filter: drop-shadow(0 0 8px rgba(255, 255, 0, 1)); /* Hover'da daha belirgin parlama */
+            transform: scale(1.1); /* İkon büyütme */
+        }
+    </style>
+</head>
+<body onload="initApp()">
+
+
+<div class="animated-bg"></div>
+
+
+<div class="relative min-h-screen z-10">
+
+
+<header class="bg-black/90 sticky top-0 z-50 shadow-2xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                
+                
+<div class="flex-shrink-0">
+                    <a href="#" class="block">
+                        
+<div class="flex items-center space-x-2 h-16" style="filter: drop-shadow(0 0 8px rgba(255, 51, 51, 0.8));">
+                            
+<i class="fas fa-dragon text-4xl text-red-500 transform hover:scale-110 transition duration-300"></i>
+                            
+<span class="text-4xl font-extrabold tracking-tight text-white" 
+                                  style="
+                                      text-shadow: 2px 2px 4px #000000, 0 0 10px var(--primary-red);
+                                      background: linear-gradient(90deg, #ff4d4d, #ffffff, #ff0000);
+                                      -webkit-background-clip: text;
+                                      -webkit-text-fill-color: transparent;
+                                  ">
+                                PVPEVİM
+                            </span>
+                        </div>
+                        
+</a>
+                </div>
+                
+                
+<nav class="hidden md:block">
+                    <div id="nav-links" class="ml-10 flex items-baseline space-x-4">
+                        
+</div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    
+<main class="max-w-7xl mx-auto p-4 lg:p-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            
+<aside class="w-full lg:w-1/6" id="sidebar-left">
+                
+</aside>
+            
+            
+<section class="w-full lg:w-4/6 space-y-12" id="dynamic-content">
+                
+</section>
+
+            
+<aside class="w-full lg:w-1/6" id="sidebar-right">
+                
+</aside>
+            
+        </div>
+    </main>
+    
+    
+<footer class="bg-black/90 p-4 text-center mt-10">
+        <p class="text-sm text-gray-500">PVPEVİM © 2025 - Tüm Hakları Saklıdır. | <a href="#" onclick="showModal('admin-panel')" class="text-red-700 hover:text-red-500">Yönetici Girişi</a></p>
+    </footer>
+
+    
+<div id="app-modal" class="fixed inset-0 bg-black bg-opacity-75 hidden z-[100] flex items-center justify-center p-4" onclick="hideModal()">
+        <div class="bg-gray-800 p-8 rounded-xl max-w-sm w-full shadow-2xl border border-red-600" onclick="event.stopPropagation()">
+            <h3 id="modal-title" class="text-2xl font-bold text-red-500 mb-4 border-b border-red-500 pb-2">Başlık</h3>
+            <div id="modal-content" class="text-gray-300 space-y-4">
+                
+</div>
+            <button onclick="hideModal()" class="mt-6 w-full btn-primary px-4 py-2 rounded-md font-semibold">KAPAT</button>
+        </div>
+    </div>
+    
+    
+<div id="msg-modal" class="fixed inset-0 bg-black bg-opacity-75 hidden z-[110] flex items-center justify-center p-4" onclick="hideMessage()">
+        <div id="msg-modal-box" class="p-6 rounded-xl max-w-xs w-full shadow-2xl" onclick="event.stopPropagation()">
+            <p id="msg-modal-text" class="text-white text-base mb-4"></p>
+            <button onclick="hideMessage()" class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md font-semibold transition duration-150">Tamam</button>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    // --- UYGULAMA VERİ VE DURUM YÖNETİMİ ---
+    // NOT: Demo amaçlı kullanıcı adı ve şifreniz kodda saklanmaya devam ediyor, 
+    // ancak giriş formunda otomatik olarak görünmeyecek.
+    const ADMIN_USERNAME = "asireis";
+    const ADMIN_PASSWORD = "Ramo3434aaa";
+    let isAdminLoggedIn = false;
+    let isUserLoggedIn = false; // Yeni: Kullanıcı oturum durumu
+    let nextServerId = 6; // Mock ID sayacı
+    
+    let servers = {
+        metin2: [
+            { id: 1, name: "PVPEVİM ÖZEL (YENİ AÇILIŞ!)", status: "AÇIK", statusColor: "green", difficulty: "Orta", isVIP: true },
+            { id: 2, name: "Ejderha Ruhu 1-99 Farm", status: "AÇIK", statusColor: "green", difficulty: "Kolay", isVIP: false },
+            { id: 3, name: "Savaşçı Dünyası Official", status: "KAPALI", statusColor: "red", difficulty: "Zor", isVIP: false },
+        ],
+        knight: [
+            { id: 4, name: "USKO Alternatif Yeni Dünya", status: "AÇIK", statusColor: "green", type: "PK", isVIP: true },
+            { id: 5, name: "ROSETTA Farm Server", status: "AÇIK", statusColor: "green", type: "Farm", isVIP: false },
+        ]
+    };
+
+    // Reklam Konfigürasyonu
+    let adConfig = {
+        featured: {
+            // Görsel/GIF URL'si ve linkleri artık burada tutuluyor.
+            imageUrl: 'https://placehold.co/728x90/550000/ffffff?text=PVPEVİM+REKLAM+ALANI',
+            linkUrl: '#',
+            description: 'Öne Çıkan Sunucu Banner'
+        },
+        left: {
+            imageUrl: 'https://placehold.co/300x600/cc0000/ffffff?text=REKLAM+VER',
+            linkUrl: '#',
+            description: '300x600 Banner Reklam'
+        },
+        right: {
+            imageUrl: 'https://placehold.co/300x250/003366/ffffff?text=REKLAM+VER',
+            linkUrl: '#',
+            description: '300x250 Reklam Banner'
+        }
+    };
+
+    // --- DOM ELEMENTLERİ ---
+    const navLinks = document.getElementById('nav-links');
+    const dynamicContent = document.getElementById('dynamic-content');
+    const sidebarLeft = document.getElementById('sidebar-left');
+    const sidebarRight = document.getElementById('sidebar-right');
+    const modal = document.getElementById('app-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalContent = document.getElementById('modal-content');
+    const msgModal = document.getElementById('msg-modal');
+    const msgModalText = document.getElementById('msg-modal-text');
+
+    // --- YARDIMCI MODAL FONKSİYONLARI ---
+
+    function showMessage(message) {
+        msgModalText.textContent = message;
+        msgModal.classList.remove('hidden');
+    }
+
+    function hideMessage() {
+        msgModal.classList.add('hidden');
+    }
+
+    function hideModal() {
+        modal.classList.add('hidden');
+    }
+    
+    /** SERVER EKLE butonuna basıldığında login kontrolü yapar. */
+    function checkLoginForServerAdd() {
+        if (isUserLoggedIn) {
+            showModal('server-ekle');
+        } else {
+            showMessage("Server eklemek için öncelikle giriş yapmanız veya kayıt olmanız gerekmektedir.");
+            showModal('user-auth'); // Giriş/Kayıt Modalına yönlendir
+        }
+    }
+
+    // --- UYGULAMA GÖRÜNÜMÜNÜ YÖNETEN ANA FONKSİYONLAR ---
+
+    /** Navigasyon menüsünü kullanıcının durumuna göre günceller. */
+    function updateHeaderNav() {
+        if (isAdminLoggedIn) {
+            navLinks.innerHTML = `
+                <a href="#" onclick="handleLogout()" class="text-white btn-logout px-4 py-2 rounded-md text-sm font-medium transition duration-200"><i class="fas fa-user-shield mr-1"></i> YÖNETİCİ ÇIKIŞ</a>
+            `;
+        } else if (isUserLoggedIn) {
+            // Kullanıcı Giriş Yaptıysa
+            navLinks.innerHTML = `
+                <a href="#metin2" class="nav-link-item group"><i class="fas fa-dragon mr-2 text-red-500 group-hover:text-yellow-400 icon-glow transition-all duration-200"></i> Metin2 PVP</a>
+                <a href="#knight" class="nav-link-item group"><i class="fas fa-sword mr-2 text-gray-400 group-hover:text-white icon-glow transition-all duration-200"></i> Knight Online</a>
+                <a href="#" class="text-gray-300 hover:bg-red-700/50 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-200">Blog</a>
+                <a href="#" onclick="showModal('server-ekle')" class="text-white btn-primary px-4 py-2 rounded-md text-sm font-medium transition duration-200">SERVER EKLE <i class="fas fa-plus ml-1"></i></a>
+                <a href="#" onclick="handleUserLogout()" class="text-white btn-logout px-4 py-2 rounded-md text-sm font-medium transition duration-200"><i class="fas fa-sign-out-alt mr-1"></i> ÇIKIŞ YAP</a>
+            `;
+        } else {
+            // Kullanıcı Giriş Yapmadıysa (Anonim)
+            navLinks.innerHTML = `
+                <a href="#metin2" class="nav-link-item group"><i class="fas fa-dragon mr-2 text-red-500 group-hover:text-yellow-400 icon-glow transition-all duration-200"></i> Metin2 PVP</a>
+                <a href="#knight" class="nav-link-item group"><i class="fas fa-sword mr-2 text-gray-400 group-hover:text-white icon-glow transition-all duration-200"></i> Knight Online</a>
+                <a href="#" class="text-gray-300 hover:bg-red-700/50 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-200">Blog</a>
+                <a href="#" onclick="checkLoginForServerAdd()" class="text-white btn-primary px-4 py-2 rounded-md text-sm font-medium transition duration-200">SERVER EKLE <i class="fas fa-plus ml-1"></i></a>
+                <a href="#" onclick="showModal('user-auth')" class="text-white btn-primary px-4 py-2 rounded-md text-sm font-medium transition duration-200">GİRİŞ / KAYIT <i class="fas fa-user-circle ml-1"></i></a>
+                <a href="#" onclick="showModal('admin-panel')" class="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition duration-200"><i class="fas fa-user-shield mr-1"></i> Yönetici Girişi</a>
+            `;
+        }
+    }
+
+    /** Sol ve Sağ kenar çubuklarını kullanıcının durumuna göre günceller. */
+    function updateSidebars() {
+        if (isAdminLoggedIn) {
+            sidebarLeft.innerHTML = '';
+            sidebarRight.innerHTML = '';
+        } else {
+            // Sol Reklam Alanı (300x600) - GIF'i destekler
+            sidebarLeft.innerHTML = `
+                <div class="sticky top-24">
+                    <div class="bg-black/70 p-4 rounded-xl shadow-lg border border-red-800/50 text-center mb-8">
+                        <a href="${adConfig.left.linkUrl}" target="_blank" class="block w-full h-full">
+                            <img src="${adConfig.left.imageUrl}" 
+                                alt="${adConfig.left.description}" 
+                                class="w-full rounded-lg mx-auto"
+                                onerror="this.onerror=null; this.src='https://placehold.co/300x600/cc0000/ffffff?text=Görsel/GIF+Yüklenemedi'">
+                        </a>
+                        <p class="text-xs text-gray-500 mt-2">${adConfig.left.description}</p>
+                        <a href="#" class="btn-primary inline-block text-xs mt-3 px-3 py-1 rounded">REKLAM VER</a>
+                    </div>
+                </div>
+            `;
+            // Sağ Reklam Alanı (300x250) - GIF'i destekler
+            sidebarRight.innerHTML = `
+                <div class="sticky top-24">
+                    <div class="bg-black/70 p-4 rounded-xl shadow-lg border border-red-800/50 text-center mb-8">
+                        <a href="${adConfig.right.linkUrl}" target="_blank" class="block w-full h-full">
+                            <img src="${adConfig.right.imageUrl}" 
+                                alt="${adConfig.right.description}" 
+                                class="w-full rounded-lg mx-auto"
+                                onerror="this.onerror=null; this.src='https://placehold.co/300x250/003366/ffffff?text=Görsel/GIF+Yüklenemedi'">
+                        </a>
+                        <p class="text-xs text-gray-500 mt-2">${adConfig.right.description}</p>
+                        <a href="#" class="btn-primary inline-block text-xs mt-3 px-3 py-1 rounded">REKLAM VER</a>
+                    </div>
+                </div>
+            `;
+        }
+    }
+    
+    /** Ana server listesi görünümünü oluşturur (Ziyaretçi/Anonim Kullanıcı). */
+    function renderServerLists() {
+        const featuredAd = adConfig.featured; // Öne çıkan reklamı al
+        
+        let content = `
+            
+<div class="bg-black/80 p-4 rounded-xl shadow-xl text-center featured-ad-glow relative overflow-hidden">
+                <i class="fas fa-sword absolute top-2 left-2 text-yellow-500 text-2xl animate-sway"></i>
+                <i class="fas fa-sword absolute top-2 right-2 text-yellow-500 text-2xl animate-sway" style="transform: scaleX(-1);"></i>
+
+                <a href="${featuredAd.linkUrl}" target="_blank" class="block">
+                    <img src="${featuredAd.imageUrl}" 
+                         alt="${featuredAd.description}" 
+                         class="w-full h-auto mx-auto rounded-lg max-w-full border-2 border-red-700/50"
+                         onerror="this.onerror=null; this.src='https://placehold.co/728x90/550000/ffffff?text=Öne+Çıkan+Banner/GIF+Yüklenemedi'; this.classList.add('border-dashed', 'border-gray-500');">
+                </a>
+                <h2 class="text-2xl md:text-3xl font-bold text-red-500 mt-4 mb-2 uppercase tracking-wide">
+                    <i class="fas fa-crown text-yellow-400 mr-2"></i> ÖNE ÇIKAN PVP SERVER <i class="fas fa-crown text-yellow-400 ml-2"></i>
+                </h2>
+                <p class="text-md text-gray-300 mb-4 px-2">Bu haftanın en gözde server'ını keşfet, maceraya katıl!</p>
+                <a href="${featuredAd.linkUrl}" target="_blank" class="btn-primary inline-block px-8 py-3 rounded-lg font-bold text-lg animate-pulse hover:animate-none">
+                    <i class="fas fa-play-circle mr-2"></i> HEMEN OYNA!
+                </a>
+            </div>
+            
+            
+<div id="metin2" class="bg-black/70 p-6 rounded-xl shadow-xl border border-red-800/50">
+                <h2 class="text-3xl font-bold text-white mb-6 border-b border-red-800/50 pb-2">Metin2 PVP Server Listesi</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left server-table rounded-lg overflow-hidden text-sm">
+                        <thead>
+                            <tr>
+                                <th class="w-1/12 rounded-tl-lg">#</th>
+                                <th class="w-4/12">Server Adı</th>
+                                <th class="w-2/12">Durum</th>
+                                <th class="w-2/12 rounded-tr-lg">Zorluk</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${servers.metin2.map((server, index) => `
+                                <tr class="hover:bg-red-900/20 transition duration-150 cursor-pointer">
+                                    <td class="font-bold text-${server.isVIP ? 'red-500' : 'gray-400'}">${index + 1} ${server.isVIP ? '<i class="fas fa-crown text-yellow-400"></i>' : ''}</td>
+                                    <td>${server.name}</td>
+                                    <td class="text-${server.statusColor}-400"><i class="fas fa-${server.status === 'AÇIK' ? 'check-circle' : 'times-circle'} mr-1"></i> ${server.status}</td>
+                                    <td>${server.difficulty}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            
+<div id="knight" class="bg-black/70 p-6 rounded-xl shadow-xl border border-red-800/50">
+                <h2 class="text-3xl font-bold text-white mb-6 border-b border-red-800/50 pb-2">Knight Online Server Listesi</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left server-table rounded-lg overflow-hidden text-sm">
+                        <thead>
+                            <tr>
+                                <th class="w-1/12 rounded-tl-lg">#</th>
+                                <th class="w-4/12">Server Adı</th>
+                                <th class="w-2/12">Durum</th>
+                                <th class="w-2/12 rounded-tr-lg">Sunucu Türü</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${servers.knight.map((server, index) => `
+                                <tr class="hover:bg-red-900/20 transition duration-150 cursor-pointer">
+                                    <td class="font-bold text-${server.isVIP ? 'red-500' : 'gray-400'}">${index + 1} ${server.isVIP ? '<i class="fas fa-star text-yellow-400"></i>' : ''}</td>
+                                    <td>${server.name}</td>
+                                    <td class="text-${server.statusColor}-400"><i class="fas fa-${server.status === 'AÇIK' ? 'check-circle' : 'times-circle'} mr-1"></i> ${server.status}</td>
+                                    <td>${server.type}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+        dynamicContent.innerHTML = content;
+    }
+
+    // Yeni: Reklam konfigürasyonunu kaydeder.
+    function saveAdConfig(form) {
+        // Üst Banner (Featured)
+        adConfig.featured.imageUrl = form.featuredImageUrl.value;
+        adConfig.featured.linkUrl = form.featuredLinkUrl.value;
+        
+        // Sol Banner
+        adConfig.left.imageUrl = form.leftImageUrl.value;
+        adConfig.left.linkUrl = form.leftLinkUrl.value;
+        
+        // Sağ Banner
+        adConfig.right.imageUrl = form.rightImageUrl.value;
+        adConfig.right.linkUrl = form.rightLinkUrl.value;
+        
+        showMessage('Reklam ayarları başarıyla güncellendi.');
+        updateAppView();
+    }
+    
+    // Yeni: Reklam Yönetim Formunu oluşturur.
+    function renderAdManagementForm() {
+        const featuredAd = adConfig.featured;
+        const leftAd = adConfig.left;
+        const rightAd = adConfig.right;
+        
+        return `
+            <div class="bg-black/70 p-6 rounded-xl shadow-xl border border-red-800/50 mb-12">
+                <h2 class="text-2xl font-bold text-red-500 mb-4 border-b border-red-800 pb-2"><i class="fas fa-bullhorn mr-1"></i> Reklam Banner Yönetimi</h2>
+                <p class="text-gray-400 mb-4 text-sm">Sitedeki tüm reklam görsellerini/GIF'lerini (URL) ve yönlendirme linklerini buradan güncelleyin.</p>
+                
+                <form id="ad-config-form" onsubmit="event.preventDefault(); saveAdConfig(this)">
+                    
+                    
+<div class="p-4 bg-gray-900 rounded-lg mb-6 border border-red-500">
+                        <h3 class="font-bold text-lg text-white mb-2"><i class="fas fa-star text-yellow-400 mr-1"></i> Üst Banner - Öne Çıkan Server (728x90)</h3>
+                        <div class="space-y-3">
+                            <input type="url" name="featuredImageUrl" placeholder="Görsel veya GIF URL'si (728x90 Boyutunda Önerilir)" value="${featuredAd.imageUrl}" class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-red-500 focus:border-red-500" required>
+                            <input type="url" name="featuredLinkUrl" placeholder="Hedef Site Linki (http://...)" value="${featuredAd.linkUrl}" class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-red-500 focus:border-red-500" required>
+                        </div>
+                    </div>
+
+                    
+<div class="p-4 bg-gray-900 rounded-lg mb-6 border border-red-900">
+                        <h3 class="font-bold text-lg text-white mb-2">Sol Banner (300x600)</h3>
+                        <div class="space-y-3">
+                            <input type="url" name="leftImageUrl" placeholder="Görsel veya GIF URL'si (300x600 Boyutunda Önerilir)" value="${leftAd.imageUrl}" class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-red-500 focus:border-red-500" required>
+                            <input type="url" name="leftLinkUrl" placeholder="Site Linki (http://...)" value="${leftAd.linkUrl}" class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-red-500 focus:border-red-500" required>
+                        </div>
+                    </div>
+                    
+                    
+<div class="p-4 bg-gray-900 rounded-lg mb-6 border border-red-900">
+                        <h3 class="font-bold text-lg text-white mb-2">Sağ Banner (300x250)</h3>
+                        <div class="space-y-3">
+                            <input type="url" name="rightImageUrl" placeholder="Görsel veya GIF URL'si (300x250 Boyutunda Önerilir)" value="${rightAd.imageUrl}" class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-red-500 focus:border-red-500" required>
+                            <input type="url" name="rightLinkUrl" placeholder="Site Linki (http://...)" value="${rightAd.linkUrl}" class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-red-500 focus:border-red-500" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="w-full btn-primary px-4 py-2 rounded-md font-semibold mt-4"><i class="fas fa-sync-alt mr-1"></i> Reklamları Güncelle</button>
+                </form>
+            </div>
+        `;
+    }
+
+    /** Yönetici paneli görünümünü oluşturur. */
+    function renderAdminPanel() {
+        const metin2Rows = servers.metin2.map(server => `
+            <tr id="server-${server.id}" class="hover:bg-gray-700 transition duration-150">
+                <td>${server.id}</td>
+                <td contenteditable="true" data-field="name">${server.name}</td>
+                <td>
+                    <select class="bg-gray-700 rounded p-1 text-sm w-full" data-field="status">
+                        <option value="AÇIK" ${server.status === 'AÇIK' ? 'selected' : ''}>AÇIK</option>
+                        <option value="KAPALI" ${server.status === 'KAPALI' ? 'selected' : ''}>KAPALI</option>
+                    </select>
+                </td>
+                <td contenteditable="true" data-field="difficulty">${server.difficulty}</td>
+                <td>
+                    <select class="bg-gray-700 rounded p-1 text-sm w-full" data-field="isVIP">
+                        <option value="true" ${server.isVIP ? 'selected' : ''}>VIP</option>
+                        <option value="false" ${!server.isVIP ? 'selected' : ''}>Normal</option>
+                    </select>
+                </td>
+                <td>Metin2</td>
+                <td>
+                    <button onclick="saveServer(${server.id}, 'metin2')" class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs mr-1"><i class="fas fa-save"></i> Kaydet</button>
+                    <button onclick="deleteServer(${server.id}, 'metin2')" class="bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded text-xs"><i class="fas fa-trash"></i> Sil</button>
+                </td>
+            </tr>
+        `).join('');
+
+        const knightRows = servers.knight.map(server => `
+            <tr id="server-${server.id}" class="hover:bg-gray-700 transition duration-150">
+                <td>${server.id}</td>
+                <td contenteditable="true" data-field="name">${server.name}</td>
+                <td>
+                    <select class="bg-gray-700 rounded p-1 text-sm w-full" data-field="status">
+                        <option value="AÇIK" ${server.status === 'AÇIK' ? 'selected' : ''}>AÇIK</option>
+                        <option value="KAPALI" ${server.status === 'KAPALI' ? 'selected' : ''}>KAPALI</option>
+                    </select>
+                </td>
+                <td contenteditable="true" data-field="type">${server.type}</td>
+                 <td>
+                    <select class="bg-gray-700 rounded p-1 text-sm w-full" data-field="isVIP">
+                        <option value="true" ${server.isVIP ? 'selected' : ''}>VIP</option>
+                        <option value="false" ${!server.isVIP ? 'selected' : ''}>Normal</option>
+                    </select>
+                </td>
+                <td>Knight</td>
+                <td>
+                    <button onclick="saveServer(${server.id}, 'knight')" class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs mr-1"><i class="fas fa-save"></i> Kaydet</button>
+                    <button onclick="deleteServer(${server.id}, 'knight')" class="bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded text-xs"><i class="fas fa-trash"></i> Sil</button>
+                </td>
+            </tr>
+        `).join('');
+
+        dynamicContent.innerHTML = `
+            <div class="bg-red-900/50 p-4 rounded-xl shadow-xl border border-red-500 text-center mb-6">
+                <h1 class="text-3xl font-bold text-white"><i class="fas fa-user-shield mr-2"></i> YÖNETİCİ PANELİ</h1>
+                <p class="text-gray-200 mt-1">Sunucu listelerini ve reklam görsellerini buradan yönetin.</p>
+            </div>
+
+            ${renderAdManagementForm()}
+            
+            
+<div class="bg-black/70 p-6 rounded-xl shadow-xl border border-red-800/50 mb-12">
+                <h2 class="text-2xl font-bold text-red-500 mb-4 border-b border-red-800 pb-2">Yeni Sunucu Ekle</h2>
+                <form id="add-server-form" onsubmit="event.preventDefault(); addServer(this)">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <input type="text" name="name" placeholder="Sunucu Adı" required class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-red-500 focus:border-red-500">
+                        <select name="game" required class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-red-500 focus:border-red-500">
+                            <option value="">Oyun Seçiniz</option>
+                            <option value="metin2">Metin2</option>
+                            <option value="knight">Knight Online</option>
+                        </select>
+                        <select name="status" required class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-red-500 focus:border-red-500">
+                            <option value="AÇIK">AÇIK</option>
+                            <option value="KAPALI">KAPALI</option>
+                        </select>
+                        <select name="isVIP" required class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-red-500 focus:border-red-500">
+                            <option value="false">Normal</option>
+                            <option value="true">VIP Sunucu</option>
+                        </select>
+                        <input type="text" name="extra" placeholder="Zorluk (Metin2) / Tür (Knight)" required class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-red-500 focus:border-red-500">
+                        <button type="submit" class="w-full btn-primary px-4 py-2 rounded-md font-semibold"><i class="fas fa-plus mr-1"></i> Sunucuyu Ekle</button>
+                    </div>
+                </form>
+            </div>
+
+            
+<div class="bg-black/70 p-6 rounded-xl shadow-xl border border-red-800/50">
+                <h2 class="text-2xl font-bold text-white mb-4 border-b border-red-800 pb-2">Mevcut Sunucular (Metin2 & Knight)</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left server-table rounded-lg overflow-hidden text-sm">
+                        <thead>
+                            <tr>
+                                <th class="w-1/12">ID</th>
+                                <th class="w-3/12">Adı (Tıkla/Düzenle)</th>
+                                <th class="w-2/12">Durum</th>
+                                <th class="w-2/12">Zorluk/Tür</th>
+                                <th class="w-1/12">VIP</th>
+                                <th class="w-1/12">Oyun</th>
+                                <th class="w-2/12">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${metin2Rows}
+                            ${knightRows}
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-xs text-gray-500 mt-4">* Sunucu adını veya zorluk/tür alanını doğrudan tabloda tıklayıp düzenleyebilirsiniz.</p>
+            </div>
+        `;
+    }
+
+    /** Uygulamanın ana görünümünü (Admin veya Ziyaretçi) günceller. */
+    function updateAppView() {
+        updateHeaderNav();
+        updateSidebars();
+        if (isAdminLoggedIn) {
+            renderAdminPanel();
+        } else {
+            renderServerLists();
+        }
+        // Sayfanın başına dön (Admin panelini kolay görmek için)
+        window.scrollTo(0, 0); 
+    }
+
+    // --- CRUD İŞLEMLERİ (Yönetici Paneli) ---
+
+    /** Yeni bir sunucu ekler. */
+    function addServer(form) {
+        if (!isUserLoggedIn) {
+            showMessage("Bu işlevi kullanmak için giriş yapmalısınız.");
+            hideModal();
+            return;
+        }
+
+        const name = form.name.value;
+        const game = form.game.value;
+        const status = form.status ? form.status.value : 'AÇIK'; // Modal'dan gelirse status yok, default AÇIK
+        const isVIP = form.isVIP ? form.isVIP.value === 'true' : false; // Modal'dan gelirse default false
+        const extra = form.extra ? form.extra.value : 'Bilinmiyor';
+
+        const newServer = {
+            id: nextServerId++,
+            name: name,
+            status: status,
+            statusColor: status === 'AÇIK' ? 'green' : 'red',
+            isVIP: isVIP
+        };
+        
+        if (game === 'metin2') {
+            newServer.difficulty = extra;
+            servers.metin2.push(newServer);
+        } else if (game === 'knight') {
+            newServer.type = extra;
+            servers.knight.push(newServer);
+        } else {
+            showMessage("Lütfen geçerli bir oyun seçin.");
+            return;
+        }
+
+        form.reset();
+        showMessage(`"${name}" sunucusu başarıyla listeye eklendi (Yönetici Onayı Bekleniyor).`);
+        updateAppView(); // Görünümü yenile
+    }
+
+    /** Mevcut bir sunucuyu kaydeder (düzenler). */
+    function saveServer(id, game) {
+        if (!isAdminLoggedIn) return; // Sadece admin düzenleyebilir
+        
+        const row = document.getElementById(`server-${id}`);
+        if (!row) return;
+
+        const serverArray = servers[game];
+        const serverIndex = serverArray.findIndex(s => s.id === id);
+        
+        if (serverIndex === -1) return;
+        
+        const server = serverArray[serverIndex];
+
+        // Contenteditable alanlarını güncelle
+        server.name = row.querySelector('[data-field="name"]').textContent;
+        const extraField = row.querySelector('[data-field="difficulty"]') || row.querySelector('[data-field="type"]');
+        if (game === 'metin2') {
+            server.difficulty = extraField.textContent;
+        } else {
+            server.type = extraField.textContent;
+        }
+
+        // Select alanlarını güncelle
+        server.status = row.querySelector('[data-field="status"]').value;
+        server.statusColor = server.status === 'AÇIK' ? 'green' : 'red';
+        server.isVIP = row.querySelector('[data-field="isVIP"]').value === 'true';
+
+        showMessage(`Sunucu ID: ${id} başarıyla güncellendi.`);
+        updateAppView(); // Ana listeyi (ziyaretçi görünümünü) günceller
+    }
+
+    /** Bir sunucuyu siler. */
+    function deleteServer(id, game) {
+        if (!isAdminLoggedIn) return; // Sadece admin silebilir
+
+        const serverArray = servers[game];
+        const serverIndex = serverArray.findIndex(s => s.id === id);
+
+        if (serverIndex > -1) {
+            const deletedName = serverArray[serverIndex].name;
+            serverArray.splice(serverIndex, 1);
+            showMessage(`"${deletedName}" sunucusu başarıyla silindi.`);
+            updateAppView(); // Görünümü yenile
+        }
+    }
+
+    // --- OTURUM YÖNETİMİ (Gelişmiş Doğrulama Eklendi) ---
+
+    /** Kullanıcı Giriş/Kayıt işlemini simüle eder. */
+    function handleUserLogin() {
+        const emailInput = document.getElementById('user-email');
+        const passwordInput = document.getElementById('user-password');
+        
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
+        
+        // E-posta Doğrulaması (Basit regex ile)
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            showMessage("Lütfen geçerli bir e-posta adresi girin. (orn: abc@domain.com)");
+            emailInput.focus();
+            return;
+        }
+
+        // Şifre Doğrulaması (En az 6 karakter)
+        if (password.length < 6) {
+            showMessage("Şifreniz en az 6 karakter olmalıdır.");
+            passwordInput.focus();
+            return;
+        }
+        
+        // Simülasyon Başarılı:
+        isUserLoggedIn = true;
+        showMessage(`Hoş geldiniz, ${email}! Giriş başarılı. Artık server ekleyebilirsiniz.`);
+        hideModal();
+        updateAppView();
+    }
+
+    /** Kullanıcı oturumunu kapatır. */
+    function handleUserLogout() {
+        isUserLoggedIn = false;
+        showMessage('Kullanıcı oturumu kapatıldı.');
+        updateAppView();
+    }
+
+    /** Yönetici oturumunu kapatır. */
+    function handleLogout() {
+        isAdminLoggedIn = false;
+        showMessage('Yönetici oturumu kapatıldı.');
+        updateAppView();
+    }
+    
+    /** Modal'ı açar ve içeriğini ayarlar. */
+    function showModal(type) {
+        hideModal();
+        
+        let title = "";
+        let content = "";
+
+        switch (type) {
+            case 'admin-panel':
+                title = "Yönetici Girişi";
+                // Değişiklik burada: value="..." kaldırıldı
+                content = `
+                    <p class="text-sm text-red-400">Sayın Yönetici (Admin),</p>
+                    <p>Bu kısım sadece site yöneticilerinin (Admin/GM) sunucuları yönetmesi için ayrılmıştır. Lütfen giriş yapın.</p>
+                    <form id="admin-login-form">
+                        <input type="text" id="admin-username" placeholder="Kullanıcı Adı" class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-red-500 focus:border-red-500 mt-2" required>
+                        <input type="password" id="admin-password" placeholder="Şifre" class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-red-500 focus:border-red-500 mt-2" required>
+                        <button type="submit" class="w-full btn-primary px-4 py-2 rounded-md font-semibold mt-4">Giriş Yap</button>
+                    </form>
+                `;
+                break;
+            case 'user-auth':
+                title = "Giriş Yap / Kayıt Ol";
+                content = `
+                    <p class="text-sm text-gray-300">Server eklemek, yorum yapmak ve favori sunucularınızı takip etmek için giriş yapın.</p>
+                    <div id="user-auth-form-container">
+                        <input type="email" id="user-email" placeholder="E-posta Adresi (Geçerli Format Gerekli)" value="oyuncu@pvpevim.com" class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-red-500 focus:border-red-500 mt-2" required>
+                        <input type="password" id="user-password" placeholder="Şifre (Min. 6 Karakter)" value="123456" class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-red-500 focus:border-red-500 mt-2" required>
+                        <button class="w-full btn-primary px-4 py-2 rounded-md font-semibold mt-4" onclick="handleUserLogin()">Giriş Yap / Kayıt Ol</button>
+                    </div>
+                    <p class="text-xs text-center text-gray-500 mt-3">Demo: Geçerli e-posta formatı ve min 6 karakter şifre kullanın.</p>
+                `;
+                break;
+            case 'server-ekle':
+                title = "Server Ekle";
+                content = `
+                    <p>Server'ınızı binlerce oyuncuya duyurmak için formu doldurun. Yönetici onayı beklenmektedir.</p>
+                    <form onsubmit="event.preventDefault(); addServer(this); hideModal();">
+                        <input type="text" name="name" placeholder="Server Adı" class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-red-500 focus:border-red-500 mt-2" required>
+                        <input type="url" name="link" placeholder="Web Sitesi Linki (http://...)" class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-red-500 focus:border-red-500 mt-2" required>
+                        <select name="game" class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-red-500 focus:border-red-500 mt-2" required>
+                            <option value="">Oyun Seçiniz: Metin2 / Knight Online</option>
+                            <option value="metin2">Metin2</option>
+                            <option value="knight">Knight Online</option>
+                        </select>
+                        <textarea name="description" placeholder="Server Açıklaması (Max 500 Karakter)" class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:ring-red-500 focus:border-red-500 mt-2" rows="3" required></textarea>
+                        <button type="submit" class="w-full btn-primary px-4 py-2 rounded-md font-semibold mt-4">Serverı Gönder</button>
+                    </form>
+                `;
+                break;
+        }
+
+        modalTitle.innerHTML = title;
+        modalContent.innerHTML = content;
+        modal.classList.remove('hidden');
+
+        // Admin Giriş Formu için event listener
+        if (type === 'admin-panel') {
+            document.getElementById('admin-login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const user = document.getElementById('admin-username').value;
+                const pass = document.getElementById('admin-password').value;
+
+                if (user === ADMIN_USERNAME && pass === ADMIN_PASSWORD) {
+                    isAdminLoggedIn = true;
+                    showMessage('Yönetici Girişi Başarılı! Hoş geldiniz, ' + ADMIN_USERNAME + '.');
+                    hideModal();
+                    updateAppView(); // Admin paneli görünümüne geç
+                } else {
+                    showMessage('Hatalı Kullanıcı Adı veya Şifre. Lütfen tekrar deneyin.');
+                }
+            });
+        }
+    }
+    
+    // --- BAŞLANGIÇ ---
+
+    function initApp() {
+        // Uygulama yüklendiğinde varsayılan (ziyaretçi) görünümü ayarla
+        updateAppView(); 
+    }
+</script>
+
+</body>
+</html>
